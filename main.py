@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import *
 from car import Car, walls
+from brain import Brain
+import numpy as np
 #POLICZYĆ GDZIE PRZECINA SIĘ KAŻDY PROMIEŃ
 
 def main():
@@ -9,6 +11,8 @@ def main():
     screen = pygame.display.set_mode((500, 500))
     temp_car = Car()
     pygame.display.set_caption('Basic Pygame program')
+
+    nn = Brain()
 
     # Fill background
     background = pygame.Surface(screen.get_size())
@@ -30,19 +34,22 @@ def main():
 
     # Event loop
     while True:
-        clock.tick(30)
+        clock.tick(60)
         for event in pygame.event.get():
             if event.type == QUIT:
                 return
-        # W main.py przed temp_car.update()
-        keys = pygame.key.get_pressed()
-        if keys[K_LEFT]: temp_car.x -= 1
-        if keys[K_RIGHT]: temp_car.x += 1
-        if keys[K_UP]: temp_car.y -= 1
-        if keys[K_DOWN]: temp_car.y += 1
-        
         temp_car.update()
         temp_car.calculate_intersection_point(walls)
+        where = np.argmax(nn.predict(temp_car.distances))
+        if where == 0:
+            temp_car.x += 1
+        elif where == 1:
+            temp_car.y += 1
+        elif where == 2:
+            temp_car.x -= 1
+        else:
+            temp_car.y += 1
+
         screen.blit(background, (0, 0))
         screen.blit(temp_car.image, temp_car.rect)
         for wall in walls:

@@ -28,6 +28,7 @@ class Car(pygame.sprite.Sprite):
     def update(self):
         # Promienie muszą być odświeżane co klatkę do pełnej długości
         self.rays = []
+        self.distances = []
         for ang in angles:
             # Używamy standardowego cos dla X i sin dla Y
             end_x = self.x + self.rayLen * cos(radians(ang))
@@ -65,3 +66,8 @@ class Car(pygame.sprite.Sprite):
 
             if closest_point:
                 ray[1] = closest_point
+                self.distances.append(min_dist / self.rayLen) 
+            else:
+                self.distances.append(1)
+        def get_input_data(self):
+            return self.distances
