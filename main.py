@@ -44,6 +44,8 @@ def main():
         screen.blit(temp_car.image, temp_car.rect)
         for wall in walls:
             pygame.draw.line(screen, "black", wall[0], wall[1])
+        for ray in temp_car.rays:
+            pygame.draw.line(screen, "blue", ray[0], ray[1])
         pygame.display.flip()
 
 
