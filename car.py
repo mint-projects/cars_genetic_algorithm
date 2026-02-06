@@ -1,10 +1,12 @@
 import pygame
 from math import radians, sin, cos, sqrt
+from brain import Brain
+import numpy as np
 
 # Poprawione kąty (315 zamiast 305)
 angles = (0, 45, 90, 135, 180, 225, 270, 315)
 
-walls = [
+walls = [((0, 50), (0, 100)),
     ((0, 50), (200, 50)),
     ((0, 100), (150, 100)),
     ((200, 50), (200, 350)),
@@ -13,29 +15,42 @@ walls = [
     ((150, 400), (500, 400))
 ]
 
+finish = (500, 375)
+
 class Car(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, brain=None):
         pygame.sprite.Sprite.__init__(self)
         self.x = 35
         self.y = 75
-        self.rayLen = 150 # Zwiększyłem trochę, żeby było lepiej widać
-
+        self.rayLen = 150
+        self.alive = True
+        self.fitness = 0
         self.image = pygame.Surface([10, 10])
         self.image.fill("red")
         self.rect = self.image.get_rect()
-        self.update() # Od razu tworzy self.rays
+        if brain == None:
+            self.brain = Brain()
+        else:
+            self.brain = brain
+        self.update()
 
     def update(self):
-        # Promienie muszą być odświeżane co klatkę do pełnej długości
-        self.rays = []
-        self.distances = []
-        for ang in angles:
-            # Używamy standardowego cos dla X i sin dla Y
-            end_x = self.x + self.rayLen * cos(radians(ang))
-            end_y = self.y + self.rayLen * sin(radians(ang))
-            self.rays.append([(self.x, self.y), (int(end_x), int(end_y))])
-        
-        self.rect.center = (self.x, self.y)
+        self.check_collision(walls)
+        if self.alive == False:
+            return 0
+        else:
+            self.rays = []
+            self.distances = []
+            self.calculate_fitness(finish)
+            for ang in angles:
+                # Używamy standardowego cos dla X i sin dla Y
+                end_x = self.x + self.rayLen * cos(radians(ang))
+                end_y = self.y + self.rayLen * sin(radians(ang))
+                self.rays.append([(self.x, self.y), (int(end_x), int(end_y))])
+            
+            self.rect.center = (self.x, self.y)
+            self.calculate_intersection_point(walls)
+            self.move(self.distances)
 
     def calculate_intersection_point(self, walls):
         for ray in self.rays:
@@ -69,5 +84,28 @@ class Car(pygame.sprite.Sprite):
                 self.distances.append(min_dist / self.rayLen) 
             else:
                 self.distances.append(1)
-        def get_input_data(self):
-            return self.distances
+
+    def check_collision(self, walls):
+        for wall in walls:
+            if self.rect.clipline(wall):
+                self.alive = False
+
+    def get_input_data(self):
+        return self.distances
+        
+    def calculate_fitness(self, finish):
+        dist = sqrt( (self.x - finish[0]) ** 2 + (self.y - finish[1]) ** 2)
+        self.fitness = 1 / (1 + dist)
+
+    def move(self, distances):
+        predicted_move = np.argmax(self.brain.predict(distances))
+
+        if predicted_move == 0:
+            self.x += 1
+        elif predicted_move == 1:
+            self.y += 1
+        elif predicted_move == 2:
+            self.x -= 1
+        else:
+            self.y += 1
+
