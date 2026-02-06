@@ -22,6 +22,9 @@ class Car(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.x = 35
         self.y = 75
+        self.frames_alive = 0
+        self.last_x = self.x
+        self.last_y = self.y
         self.rayLen = 150
         self.alive = True
         self.fitness = 0
@@ -51,6 +54,17 @@ class Car(pygame.sprite.Sprite):
             self.rect.center = (self.x, self.y)
             self.calculate_intersection_point(walls)
             self.move(self.distances)
+            self.frames_alive += 1
+
+            # Co 60 klatek (1 sekunda) sprawdź, czy auto się ruszyło
+            if self.frames_alive % 60 == 0:
+                dist_moved = sqrt((self.x - self.last_x)**2 + (self.y - self.last_y)**2)
+                if dist_moved < 5: # Jeśli przejechało mniej niż 5 pikseli w sekundę...
+                    self.alive = False # ...to dowidzenia, giniesz za lenistwo
+                
+                # Zaktualizuj ostatnią pozycję do kolejnego sprawdzenia
+                self.last_x = self.x
+                self.last_y = self.y
 
     def calculate_intersection_point(self, walls):
         for ray in self.rays:

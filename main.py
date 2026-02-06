@@ -6,13 +6,11 @@ import numpy as np
 #POLICZYĆ GDZIE PRZECINA SIĘ KAŻDY PROMIEŃ
 
 POP_SIZE = 50
-GENERATIONS = 10
 
 def main():
     # Initialise screen
     pygame.init()
     screen = pygame.display.set_mode((500, 500))
-    temp_car = Car()
     pygame.display.set_caption('Basic Pygame program')
 
     # Fill background
@@ -20,18 +18,13 @@ def main():
     background = background.convert()
     background.fill((250, 250, 250))
 
-    # Display some text
-    font = pygame.font.Font(None, 36)
-    text = font.render("Hello There", 1, (10, 10, 10))
-    textpos = text.get_rect()
-    textpos.centerx = background.get_rect().centerx
-    background.blit(text, textpos)
     clock = pygame.time.Clock()
     end = pygame.Surface([10, 50])
     end.fill("purple")
     endrect = end.get_rect()
     endrect.center = finish
     generation = 1
+    font = pygame.font.Font(None, 24)
     
 
     cars = pygame.sprite.Group()
@@ -51,13 +44,16 @@ def main():
         if len(cars_alive) > 0:
             screen.blit(background, (0, 0))
             cars.update()
-            cars.draw(background)
+            cars.draw(screen)
             screen.blit(end, endrect)
             for wall in walls:
                 pygame.draw.line(screen, "black", wall[0], wall[1])
             for car in cars:
                 for ray in car.rays:
                     pygame.draw.line(screen, "blue", ray[0], ray[1])
+
+            info_text = font.render(f"Generacja: {generation}  |  Zyje: {len(cars_alive)}", True, (0, 0, 0))
+            screen.blit(info_text, (10, 10))
                 
         else:
             best_car = max(cars, key=lambda car: car.fitness)
@@ -66,7 +62,7 @@ def main():
             for i in range(POP_SIZE):
                 new_brain = Brain(weights=best_weights)
                 if i > 0:                    
-                    new_brain.mutate(rate=0.1, scale=0.2)
+                    new_brain.mutate(rate=10, scale=20)
                 new_car = Car(brain=new_brain)
                 cars.add(new_car)
             generation += 1
