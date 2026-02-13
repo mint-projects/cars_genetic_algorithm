@@ -20,11 +20,7 @@ class Brain:
         output = relu(np.dot(H1, self.layer2))
         probs = softmax(output)
         return probs
-    def mutate(self, rate=0.1, scale=0.2):
-        """
-        rate: szansa na zmianę konkretnej wagi (0.1 = 10% wag się zmieni)
-        scale: jak duża może być zmiana (od -scale do +scale)
-        """
+    def mutate(self, rate=0.1, scale=0.5):
         print("MUTUJE")
         mask1 = np.random.rand(*self.layer1.shape) < rate
         self.layer1 += mask1 * np.random.uniform(-scale, scale, self.layer1.shape)
@@ -32,6 +28,13 @@ class Brain:
         # Mutujemy drugą warstwę
         mask2 = np.random.rand(*self.layer2.shape) < rate
         self.layer2 += mask2 * np.random.uniform(-scale, scale, self.layer2.shape )
+
+    def cross(self, brain2):
+        print("KRZYZUJE")
+        layer1 = 0.5 * self.layer1 + 0.5 * brain2.layer1
+        layer2 = 0.5 * self.layer2 + 0.5 * brain2.layer2
+        return Brain((layer1, layer2))
+    
     def get_weights(self):
         return self.layer1, self.layer2
     

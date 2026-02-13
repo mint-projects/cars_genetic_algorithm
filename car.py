@@ -2,35 +2,45 @@ import pygame
 from math import radians, sin, cos, sqrt
 from brain import Brain
 import numpy as np
+import random
 
 # Poprawione kąty (315 zamiast 305)
 angles = (0, 30, 60, 90, 270, 300, 330)
 
-walls = [((0, 50), (0, 100)),
-    ((0, 50), (200, 50)),
-    ((0, 100), (150, 100)),
-    ((200, 50), (200, 350)),
-    ((150, 100), (150, 400)),
-    ((200, 350), (500, 350)),
-    ((150, 400), (500, 400))
+walls = [
+    ((0, 50), (0, 150)),      # Ściana startowa (lewa) - teraz ma 100px wysokości
+    ((0, 50), (250, 50)),     # Górna krawędź pierwszego odcinka (wydłużona do 250)
+    ((0, 150), (150, 150)),   # Dolna krawędź pierwszego odcinka (szerokość 100)
+    
+    ((250, 50), (250, 350)),  # Prawa krawędź pionowego odcinka
+    ((150, 150), (150, 450)), # Lewa krawędź pionowego odcinka (szerokość 100)
+    
+    ((250, 350), (500, 350)), # Górna krawędź ostatniego odcinka
+    ((150, 450), (500, 450))  # Dolna krawędź ostatniego odcinka (szerokość 100)
 ]
 
-finish = (500, 375)
+# Pamiętaj, aby zaktualizować też metę, by była na środku nowej drogi:
+finish = (500, 350)
 
 class Car(pygame.sprite.Sprite):
     def __init__(self, brain=None):
         pygame.sprite.Sprite.__init__(self)
-        self.x = 35
-        self.y = 75
+        self.x = 45
+        self.y = 100
+        self.angle = 0
+        self.speed = 0
+        self.maxspeed = 6
         self.frames_alive = 0
         self.last_x = self.x
         self.last_y = self.y
-        self.rayLen = 50
+        self.rayLen = 150
         self.alive = True
         self.fitness = 0
-        self.image = pygame.Surface([10, 10])
-        self.image.fill("red")
-        self.rect = self.image.get_rect()
+        self.original_image = pygame.Surface([40, 20], pygame.SRCALPHA)
+        self.original_image.fill("red")
+        
+        self.image = self.original_image
+        self.rect = self.image.get_rect(center=(self.x, self.y))
         if brain == None:
             self.brain = Brain()
         else:
@@ -46,14 +56,15 @@ class Car(pygame.sprite.Sprite):
             self.distances = []
             self.calculate_fitness(finish)
             for ang in angles:
-                # Używamy standardowego cos dla X i sin dla Y
-                end_x = self.x + self.rayLen * cos(radians(ang))
-                end_y = self.y + self.rayLen * sin(radians(ang))
+                
+                end_x = self.x + self.rayLen * cos(radians(ang + self.angle) )
+                end_y = self.y + self.rayLen * sin(radians(ang + self.angle))
                 self.rays.append([(self.x, self.y), (int(end_x), int(end_y))])
-            
-            self.rect.center = (self.x, self.y)
+
             self.calculate_intersection_point(walls)
             self.move(self.distances)
+            self.image = pygame.transform.rotate(self.original_image, -self.angle)
+            self.rect = self.image.get_rect(center=(self.x, self.y))
             self.frames_alive += 1
 
             # Co 60 klatek (1 sekunda) sprawdź, czy auto się ruszyło
@@ -65,6 +76,7 @@ class Car(pygame.sprite.Sprite):
                 # Zaktualizuj ostatnią pozycję do kolejnego sprawdzenia
                 self.last_x = self.x
                 self.last_y = self.y
+
 
     def calculate_intersection_point(self, walls):
         for ray in self.rays:
@@ -115,11 +127,20 @@ class Car(pygame.sprite.Sprite):
         predicted_move = np.argmax(self.brain.predict(distances))
 
         if predicted_move == 0:
-            self.x += 1
+            if self.speed > 0:
+                self.angle += 2
         elif predicted_move == 1:
-            self.y += 1
+            if self.speed > 0:
+                self.angle -= 2
         elif predicted_move == 2:
-            self.x -= 1
+            self.speed = min(self.speed + 0.01, self.maxspeed)
         else:
-            self.y += 1
+            self.speed = max(self.speed - 0.01, 0)
+        a, b = self.speed * cos(radians(self.angle)), self.speed * sin(radians(self.angle))
+        self.x += a
+        self.y += b
 
+
+            
+
+print(random.sample(range(0,10), 2))
