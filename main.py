@@ -26,6 +26,9 @@ track_polygon_points = [
 def main():
     # Initialise screen
     pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load("backingtrack.wav")
+    pygame.mixer.music.play(-1)
     screen = pygame.display.set_mode((500, 500))
     pygame.display.set_caption('Basic Pygame program')
 
