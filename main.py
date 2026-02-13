@@ -8,6 +8,20 @@ import random
 
 POP_SIZE = 200
 EXPECTED_WINNERS = 1
+GRASS_COLOR = (34, 139, 34)
+ROAD_COLOR = (105, 105, 105)
+WALL_COLOR = (0, 0, 0)
+
+track_polygon_points = [
+    (0, 50),
+    (250, 50),
+    (250, 350),
+    (500, 350),
+    (500, 450),
+    (150, 450),
+    (150, 150),
+    (0, 150)
+]
 
 def main():
     # Initialise screen
@@ -21,7 +35,7 @@ def main():
     # Fill background
     background = pygame.Surface(screen.get_size())
     background = background.convert()
-    background.fill((250, 250, 250))
+    background.fill(GRASS_COLOR)
 
     clock = pygame.time.Clock()
     end = pygame.Surface([20, 100])
@@ -38,6 +52,7 @@ def main():
         cars.add(Car( Brain() ))
     # Blit everything to the screen
     screen.blit(background, (0, 0))
+    pygame.draw.polygon(screen, ROAD_COLOR, track_polygon_points, 0)
     pygame.display.flip()
     print("ELOELOELO")
     # Event loop
@@ -58,17 +73,19 @@ def main():
                 best_car = max(cars_alive, key=lambda car: car.fitness)
                 CameraX = best_car.x - 250
                 CameraY = best_car.y - 250
-                screen.fill((250, 250, 250))
+                screen.fill(GRASS_COLOR)
+                shifted_track_poly = []
+                for point in track_polygon_points:
+                    shifted_x = point[0] - CameraX
+                    shifted_y = point[1] - CameraY
+                    shifted_track_poly.append((shifted_x, shifted_y))
+                pygame.draw.polygon(screen, ROAD_COLOR, shifted_track_poly, 0)
                 
                 for wall in walls:
                     p1 = (wall[0][0] - CameraX, wall[0][1] - CameraY)
                     p2 = (wall[1][0] - CameraX, wall[1][1] - CameraY)
                     pygame.draw.line(screen, "black", p1, p2, 3)
                 
-                for checkpoint in checkpoints:
-                    p1 = (checkpoint[0][0] - CameraX, checkpoint[0][1] - CameraY)
-                    p2 = (checkpoint[1][0] - CameraX, checkpoint[1][1] - CameraY)
-                    pygame.draw.line(screen, "orange", p1, p2, 3)
 
                 screen.blit(end, (finish[0] - CameraX, finish[1] - CameraY))
                 for car in cars:
@@ -135,7 +152,14 @@ def main():
             CameraX = leader.x - 250
             CameraY = leader.y - 250
 
-            screen.fill((250, 250, 250)) 
+            screen.fill(GRASS_COLOR)
+            shifted_track_poly = []
+            for point in track_polygon_points:
+                shifted_x = point[0] - CameraX
+                shifted_y = point[1] - CameraY
+                shifted_track_poly.append((shifted_x, shifted_y))
+
+            pygame.draw.polygon(screen, ROAD_COLOR, shifted_track_poly, 0)
             
             # Rysowanie otoczenia
             for wall in walls:
@@ -145,10 +169,7 @@ def main():
 
             screen.blit(end, (finish[0] - CameraX, finish[1] - CameraY))
 
-            # Logika aut w pokazie
             for car in winners:
-                # Jeśli auto się rozbiło lub wygrało ponownie - resetujemy je na start
-                # Sprawdzamy metę tak samo jak w głównej pętli
                 if not car.alive or (car.x > 498 and 350 < car.y < 450):
                     car.x, car.y = 45, 100
                     car.angle = 0
@@ -161,7 +182,7 @@ def main():
                 cy = car.rect.y - CameraY
                 screen.blit(car.image, (cx, cy))
 
-            info_text = font.render(f"POKAZ ELITY: {len(winners)} aut w kółko", True, (255, 0, 0))
+            info_text = font.render(f"Winner!!!", True, (61, 34, 186))
             screen.blit(info_text, (10, 10))
             
             pygame.display.flip()

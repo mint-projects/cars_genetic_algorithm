@@ -45,7 +45,11 @@ class Car(pygame.sprite.Sprite):
         self.alive = True
         self.fitness = 0
         self.original_image = pygame.Surface([40, 20], pygame.SRCALPHA)
-        self.original_image.fill("red")
+        self.original_image.fill((255, 0, 0)) 
+        pygame.draw.rect(self.original_image, (0, 0, 0), [0, 0, 40, 20], 2)
+        pygame.draw.rect(self.original_image, (80, 222, 242), [20, 3, 12, 14])
+        pygame.draw.rect(self.original_image, (255, 255, 0), [35, 2, 3, 5])
+        pygame.draw.rect(self.original_image, (255, 255, 0), [35, 13, 3, 5])
         
         self.image = self.original_image
         self.rect = self.image.get_rect(center=(self.x, self.y))
