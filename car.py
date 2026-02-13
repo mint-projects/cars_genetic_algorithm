@@ -19,6 +19,14 @@ walls = [
     ((150, 450), (500, 450))  # Dolna krawędź ostatniego odcinka (szerokość 100)
 ]
 
+checkpoints = [
+    ((100, 50), (100, 150)),   # 1. Połowa pierwszej prostej   # 2. Przed pierwszym zakrętem
+    ((250, 200), (150, 200)),
+    ((250, 300), (150, 300)),  # 4. Przed drugim zakrętem
+    ((250, 350), (220, 450)),
+    ((400, 350), (400, 450))  # 5. Na ostatniej prostej
+]
+
 # Pamiętaj, aby zaktualizować też metę, by była na środku nowej drogi:
 finish = (500, 350)
 
@@ -41,6 +49,10 @@ class Car(pygame.sprite.Sprite):
         
         self.image = self.original_image
         self.rect = self.image.get_rect(center=(self.x, self.y))
+
+        self.passed_checkpoints = []
+        self.checkpoint_score = 0
+
         if brain == None:
             self.brain = Brain()
         else:
@@ -48,7 +60,7 @@ class Car(pygame.sprite.Sprite):
         self.update()
 
     def update(self):
-        self.check_collision(walls)
+        self.check_collision(walls, checkpoints)
         if self.alive == False:
             return 0
         else:
@@ -111,17 +123,25 @@ class Car(pygame.sprite.Sprite):
             else:
                 self.distances.append(1)
 
-    def check_collision(self, walls):
+    def check_collision(self, walls, checkpoints):
         for wall in walls:
             if self.rect.clipline(wall):
                 self.alive = False
+        for i in range(len(checkpoints)):
+            if i not in self.passed_checkpoints and self.rect.clipline(checkpoints[i]):
+                self.passed_checkpoints.append(i)
+                if i == 3:
+                    self.checkpoint_score += 500
+                else:
+                    self.checkpoint_score += 100
+
 
     def get_input_data(self):
         return self.distances
         
     def calculate_fitness(self, finish):
-        dist = sqrt( (self.x - finish[0]) ** 2 + (self.y - finish[1]) ** 2)
-        self.fitness = 1 / (1 + dist)
+        dist = sqrt((self.x - finish[0])**2 + (self.y - finish[1])**2)
+        self.fitness = self.checkpoint_score + (100 / (1 + dist))
 
     def move(self, distances):
         predicted_move = np.argmax(self.brain.predict(distances))
