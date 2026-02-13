@@ -4,7 +4,7 @@ from brain import Brain
 import numpy as np
 
 # Poprawione kąty (315 zamiast 305)
-angles = (0, 45, 90, 135, 180, 225, 270, 315)
+angles = (0, 30, 60, 90, 270, 300, 330)
 
 walls = [((0, 50), (0, 100)),
     ((0, 50), (200, 50)),
@@ -25,7 +25,7 @@ class Car(pygame.sprite.Sprite):
         self.frames_alive = 0
         self.last_x = self.x
         self.last_y = self.y
-        self.rayLen = 150
+        self.rayLen = 50
         self.alive = True
         self.fitness = 0
         self.image = pygame.Surface([10, 10])

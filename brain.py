@@ -10,7 +10,7 @@ def softmax(x):
 class Brain:
     def __init__(self, weights=None):
         if weights == None:
-            self.layer1 = np.random.rand(8, 6)
+            self.layer1 = np.random.rand(7, 6)
             self.layer2 = np.random.rand(6, 4)
         else:
             self.layer1 = np.copy(weights[0])
