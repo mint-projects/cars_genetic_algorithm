@@ -11,7 +11,7 @@ This project is about teaching 2D cars to drive to their final desination.
 - [Installation and usage](#installationinusage)
 - [Visual demonstration](#visualdemonstration)
 
-## Technical overview
+## ⚙️ Technical overview
 
 ### 1. The brain of a car
 Instead of using traditional gradient-based reinforcement learning, this project implements Neuroevolution.
@@ -45,3 +45,28 @@ $$Fitness = \left( \frac{100}{1 + \mathrm{Distance}_{\mathrm{to\_target}}} \righ
 - **Dynamic Camera System**: A smooth camera that automatically tracks the leader of the current generation
 - **Performance Optimization**: Use of NumPy for fast matrix multiplication within the neural networks
 
+## 🚀 Installation and Usage
+
+### 1. Prerequisites
+Make sure you have **Python 3.8+** installed. 
+```
+python --version
+```
+
+### 2. Setup
+Clone the repository and install dependencies:
+```bash
+git clone [https://github.com/mint-projects/cars_genetic_algorithm.git](https://github.com/mint-projects/cars_genetic_algorithm.git)
+cd cars_genetic_algorithm
+pip install -r requirements.txt
+```
+
+### 3. Run the simulation (remember to use headphones for best experience :D)
+```bash
+python main.py
+```
+## 📺 Visual demonstration
+
+| Generation 1 | Generation 5 | Winners Showcase |
+| :---: | :---: | :---: |
+| ![Gen 1](gifs/video_gen_1.gif) | ![Gen 5](gifs/video_gen_5.gif) | ![Winners](gifs/video_winners.gif) |
