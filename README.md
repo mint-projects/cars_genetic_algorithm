@@ -30,7 +30,7 @@ Each agent has its own set of sensors - straight lines coming out of the middle 
 This project evolves the population using the strategies below
 - **Fitness function**: Fitness of a car is calculated by a custom formula:
 
-$$Fitness = \left( \frac{100}{1 + \text{Distance}_{\text{to\_target}}} \right) + \text{Score}_{\text{checkpoints}}$$
+$$Fitness = \left( \frac{100}{1 + \mathrm{Distance}_{\mathrm{to\_target}}} \right) + \mathrm{Score}_{\mathrm{checkpoints}}$$
 
 - **Elitism**: Car with best fitness in the previous generation is automatically passed to the next generation
 - **Selection and mutation**: New agents are created by mixing the weights of top performers (Crossover) and applying random Gaussian noise (Mutation) to explore new driving strategies.
