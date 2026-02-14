@@ -8,8 +8,8 @@ This project is about teaching 2D cars to drive to their final desination.
 
 ## Table of Contents
 - [Technical overview](#technical-overview)
-- [Installation and usage](#installationinusage)
-- [Visual demonstration](#visualdemonstration)
+- [Installation and usage](#installation-and-usage)
+- [Visual demonstration](#visual-demonstration)
 
 ## ⚙️ Technical overview
 
@@ -21,7 +21,7 @@ Instead of using traditional gradient-based reinforcement learning, this project
 | :--- | :--- | :--- | :--- |
 | input | Data from sensors | 7 | Linear |
 | hidden | Dense | 6 | ReLU |
-| Input Neurons | Actions | 4 | Softmax |
+| output | Actions | 4 | Softmax |
 
 - **Evolutionary Strategy**: I implemented a Genetic Algorithm (GA) to optimize the network's weights. The population of cars evolves over generations, where only the fittest individuals pass their weights to the next batch.
 
