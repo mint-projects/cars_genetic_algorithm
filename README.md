@@ -1,4 +1,9 @@
 # Autonomous Pathfinding via Neuroevolution: A Genetic Algorithm Approach
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Pygame](https://img.shields.io/badge/pygame-ed1c24?style=for-the-badge&logo=python&logoColor=white)
+![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
+
 This project is about teaching 2D cars to drive to their final desination.
 
 ## Table of Contents
