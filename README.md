@@ -40,7 +40,7 @@ This project evolves the population using the strategies below
 $$Fitness = \left( \frac{100}{1 + \mathrm{Distance}_{\mathrm{to\_target}}} \right) + \mathrm{Score}_{\mathrm{checkpoints}}$$
 
 - **Elitism**: Car with best fitness in the previous generation is automatically passed to the next generation
-- **Selection and mutation**: New agents are created by mixing the weights of top performers (Crossover) and applying random Gaussian noise (Mutation) to explore new driving strategies.
+- **Selection and mutation**: New agents are created by mixing the weights of top performers (Crossover) and applying random Gaussian noise (Mutation) to explore new driving strategies
 
 ### 4. Key technical features
 - **Custom Physics Engine**: Developed using Pygame, handling collision detection and momentum
