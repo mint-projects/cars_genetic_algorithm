@@ -29,7 +29,7 @@ def main():
 
     pygame.init()
     pygame.mixer.init()
-    pygame.mixer.music.load("backingtrack.wav")
+    pygame.mixer.music.load("music/backingtrack.wav")
     pygame.mixer.music.play(-1)
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("AI Cars")
