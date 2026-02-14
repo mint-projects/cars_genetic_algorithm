@@ -56,7 +56,7 @@ python --version
 ### 2. Setup
 Clone the repository and install dependencies:
 ```bash
-git clone [https://github.com/mint-projects/cars_genetic_algorithm.git](https://github.com/mint-projects/cars_genetic_algorithm.git)
+git clone https://github.com/mint-projects/cars_genetic_algorithm.git
 cd cars_genetic_algorithm
 pip install -r requirements.txt
 ```
