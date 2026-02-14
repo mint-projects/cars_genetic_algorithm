@@ -11,11 +11,13 @@ This project is about teaching 2D cars to drive to their final desination.
 ### 1. The brain of a car
 Instead of using traditional gradient-based reinforcement learning, this project implements Neuroevolution.
 - **Neural Network**: Each agent (car) is powered by a custom Feedforward Neural Network (Multi-Layer Perceptron).
+
 | Layer | Type | Neurons | Activation |
 | :--- | :--- | :--- | :--- |
 | input | Data from sensors | 7 | Linear |
 | hidden | Dense | 6 | ReLU |
 | Input Neurons | Actions | 4 | Softmax |
+
 - **Evolutionary Strategy**: I implemented a Genetic Algorithm (GA) to optimize the network's weights. The population of cars evolves over generations, where only the fittest individuals pass their weights to the next batch.
 
 ### 2. Perceptrion. Raycasting sensors
@@ -27,7 +29,9 @@ Each agent has its own set of sensors - straight lines coming out of the middle 
 ### 3. Fitness evaluation and genetic operators
 This project evolves the population using the strategies below
 - **Fitness function**: Fitness of a car is calculated by a custom formula:
+
 $$Fitness = \left( \frac{100}{1 + \text{Distance}_{\text{to\_target}}} \right) + \text{Score}_{\text{checkpoints}}$$
+
 - **Elitism**: Car with best fitness in the previous generation is automatically passed to the next generation
 - **Selection and mutation**: New agents are created by mixing the weights of top performers (Crossover) and applying random Gaussian noise (Mutation) to explore new driving strategies.
 
