@@ -51,7 +51,7 @@ $$Fitness = \left( \frac{100}{1 + \mathrm{Distance}_{\mathrm{to\_target}}} \righ
 ## 🚀 Installation and Usage
 
 ### 1. Prerequisites
-Make sure you have **Python 3.8+** installed. 
+Make sure you have **Python 3.8+** installed.
 ```
 python --version
 ```
