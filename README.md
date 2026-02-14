@@ -43,7 +43,7 @@ $$Fitness = \left( \frac{100}{1 + \mathrm{Distance}_{\mathrm{to\_target}}} \righ
 - **Selection and mutation**: New agents are created by mixing the weights of top performers (Crossover) and applying random Gaussian noise (Mutation) to explore new driving strategies
 
 ### 4. Key technical features
-- **Custom Physics Engine**: Developed using Pygame, handling collision detection and momentum
+- **Custom Physics Engine**: Developed using Pygame, handling collision detection
 - **Dynamic Camera System**: A smooth camera that automatically tracks the leader of the current generation
 - **Performance Optimization**: Use of NumPy for fast matrix multiplication within the neural networks
 
