@@ -2,7 +2,7 @@
 This project is about teaching 2D cars to drive to their final desination.
 
 ## Table of Contents
-- [Technical overview](#technicaloverview)
+- [Technical overview](#1.-technical-overview)
 - [Installation and usage](#installationinusage)
 - [Visual demonstration](#visualdemonstration)
 
