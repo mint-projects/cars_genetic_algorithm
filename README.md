@@ -6,11 +6,13 @@
 
 This project is about teaching 2D cars to drive to their final desination.
 
-## Table of Contents
-- [Technical overview](#technical-overview)
-- [Installation and usage](#installation-and-usage)
-- [Visual demonstration](#visual-demonstration)
+## 📍 Table of Contents
+- [Technical Overview](#tech)
+- [Installation and Usage](#install)
+- [Visual Demonstration](#visual)
 
+
+<a name="tech"></a>
 ## ⚙️ Technical overview
 
 ### 1. The brain of a car
@@ -45,6 +47,7 @@ $$Fitness = \left( \frac{100}{1 + \mathrm{Distance}_{\mathrm{to\_target}}} \righ
 - **Dynamic Camera System**: A smooth camera that automatically tracks the leader of the current generation
 - **Performance Optimization**: Use of NumPy for fast matrix multiplication within the neural networks
 
+<a name="install"></a>
 ## 🚀 Installation and Usage
 
 ### 1. Prerequisites
@@ -65,6 +68,8 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+<a name="visual"></a>
 ## 📺 Visual demonstration
 
 | Generation 1 | Generation 5 | Winners Showcase |
